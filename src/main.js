@@ -3,7 +3,7 @@
 //   navigator.serviceWorker.register('/sw.js');
 // }
 
-console.log('JS loaded');
+console.log('JS loaded - cube removed');
 
 const canvasEl = document.getElementById('canvas');
 const width = window.innerWidth;

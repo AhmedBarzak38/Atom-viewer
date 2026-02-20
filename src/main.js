@@ -3,6 +3,8 @@
 //   navigator.serviceWorker.register('/sw.js');
 // }
 
+console.log('JS loaded');
+
 const canvasEl = document.getElementById('canvas');
 const width = window.innerWidth;
 const height = window.innerHeight;

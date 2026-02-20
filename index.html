@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>3D Atom Viewer</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <div id="ui">
+    <label>Atomic Number: <input id="atomicNumber" type="range" min="1" max="36" value="6"></label>
+    <span id="atomicVal">6</span>
+    <button id="buildBtn">Build Atom</button>
+    <select id="preset">
+      <option value="1">Hydrogen (1)</option>
+      <option value="2">Helium (2)</option>
+      <option value="3">Lithium (3)</option>
+      <option value="4">Beryllium (4)</option>
+      <option value="5">Boron (5)</option>
+      <option value="6" selected>Carbon (6)</option>
+      <option value="7">Nitrogen (7)</option>
+      <option value="8">Oxygen (8)</option>
+      <option value="9">Fluorine (9)</option>
+      <option value="10">Neon (10)</option>
+      <option value="11">Sodium (11)</option>
+      <option value="12">Magnesium (12)</option>
+      <option value="13">Aluminium (13)</option>
+      <option value="14">Silicon (14)</option>
+      <option value="15">Phosphorus (15)</option>
+      <option value="16">Sulfur (16)</option>
+      <option value="17">Chlorine (17)</option>
+      <option value="18">Argon (18)</option>
+      <option value="26">Iron (26)</option>
+      <option value="36">Krypton (36)</option>
+    </select>
+    <div style="margin-top:6px">
+      <label><input id="cloudToggle" type="checkbox"> Show electron cloud</label>
+      <label style="margin-left:8px"><input id="labelToggle" type="checkbox"> Show orbital labels</label>
+      <button id="repackBtn" style="margin-left:8px">Repack Nucleus</button>
+    </div>
+  </div>
+  <div id="canvas"></div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

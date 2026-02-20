@@ -245,6 +245,7 @@ labelToggle.addEventListener('change', () => {
 });
 
 repackBtn.addEventListener('click', () => {
+  console.log('Repack button clicked');
   repackNucleus(200);
 });
 

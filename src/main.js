@@ -75,7 +75,7 @@ function buildAtom(Z) {
   let remaining = Z; // neutral atom
   const electronGroup = new THREE.Group();
   for (let shell = 0; shell < shellRadii.length && remaining > 0; shell++) {
-    const capacity = shell === 0 ? 2 : 8 * Math.pow(2, shell - 1); // simplified
+    const capacity = 2 * (shell + 1) * (shell + 1); // accurate: 2n^2
     const inShell = Math.min(capacity, remaining);
     const radius = shellRadii[shell];
     const ring = new THREE.Group();

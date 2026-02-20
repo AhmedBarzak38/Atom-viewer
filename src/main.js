@@ -103,7 +103,7 @@ function buildAtom(Z) {
   }
   atomGroup.add(electronGroup);
 
-  atomGroup.userData = { electronGroup };
+  atomGroup.userData.electronGroup = electronGroup;
 }
 
 // --- Electron cloud rendering (points) ---
@@ -184,12 +184,19 @@ function addOrbitalLabels(electronGroup) {
 // --- Nucleus repacking (simple relaxation) ---
 function repackNucleus(iter = 120) {
   const nucleus = atomGroup.userData.nucleus;
-  if (!nucleus) return;
+  console.log('repackNucleus called, nucleus:', nucleus);
+  if (!nucleus) {
+    console.log('No nucleus found');
+    return;
+  }
   const nodes = nucleus.children;
   const n = nodes.length;
+  console.log('Repacking', n, 'nodes');
+  
   // convert to array of positions
   const pos = nodes.map(c => c.position.clone());
-  const radius = 1.2; // increased to match nucRadius
+  const radius = 1.2;
+  
   for (let it = 0; it < iter; it++) {
     for (let i = 0; i < n; i++) {
       let p = pos[i];
@@ -197,23 +204,23 @@ function repackNucleus(iter = 120) {
       for (let j = 0; j < n; j++) if (i !== j) {
         const d = new THREE.Vector3().subVectors(p, pos[j]);
         const dist = d.length() + 1e-6;
-        const minDist = 0.35; // increased preferred spacing
+        const minDist = 0.35;
         if (dist < minDist) {
           d.normalize().multiplyScalar((minDist - dist) * 0.02);
           disp.add(d);
         }
       }
-      // apply small central restoring force
       const toCenter = p.clone().multiplyScalar(-0.01);
       disp.add(toCenter);
       p.add(disp);
-      // clamp to sphere
       if (p.length() > radius) p.setLength(radius * (0.85 + Math.random() * 0.15));
       pos[i] = p;
     }
   }
+  
   // write back
   for (let i = 0; i < n; i++) nodes[i].position.copy(pos[i]);
+  console.log('Nucleus repacked');
 }
 
 // UI wiring

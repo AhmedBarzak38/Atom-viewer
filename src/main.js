@@ -1,7 +1,7 @@
 // Register service worker for PWA
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js');
-}
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('/sw.js');
+// }
 
 const canvasEl = document.getElementById('canvas');
 const width = window.innerWidth;

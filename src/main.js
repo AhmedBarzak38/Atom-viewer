@@ -14,9 +14,8 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 camera.position.set(0, 5, 12);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true });
 renderer.setSize(width, height);
-canvasEl.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;

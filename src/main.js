@@ -37,6 +37,12 @@ scene.add(dir);
 let atomGroup = new THREE.Group();
 scene.add(atomGroup);
 
+// Add a test cube to verify rendering
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
 // Simple shells (Bohr-like) radii
 const shellRadii = [1.6, 2.6, 3.6, 4.6, 5.6];
 

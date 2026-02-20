@@ -57,12 +57,12 @@ function buildAtom(Z) {
   const protons = Z;
   const neutrons = Math.round(Z * 1.25);
   const nucCount = protons + neutrons;
-  const nucRadius = 0.35;
+  const nucRadius = 0.5; // increased for better spacing
   for (let i = 0; i < nucCount; i++) {
     const isProton = i < protons;
-    const s = makeSphere(nucRadius * (isProton ? 1 : 1), isProton ? 0xff6666 : 0x999999);
-    // place randomly within small radius
-    const r = 0.9 * Math.cbrt(Math.random()) * 0.6;
+    const s = makeSphere(nucRadius * 0.8, isProton ? 0xff6666 : 0x999999);
+    // place randomly within small radius with better distribution
+    const r = 0.9 * Math.cbrt(Math.random()) * 0.8;
     const theta = Math.random() * Math.PI * 2;
     const phi = Math.acos(2 * Math.random() - 1);
     s.position.set(r * Math.sin(phi) * Math.cos(theta), r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi));
@@ -189,7 +189,7 @@ function repackNucleus(iter = 120) {
   const n = nodes.length;
   // convert to array of positions
   const pos = nodes.map(c => c.position.clone());
-  const radius = 0.9;
+  const radius = 1.2; // increased to match nucRadius
   for (let it = 0; it < iter; it++) {
     for (let i = 0; i < n; i++) {
       let p = pos[i];
@@ -197,7 +197,7 @@ function repackNucleus(iter = 120) {
       for (let j = 0; j < n; j++) if (i !== j) {
         const d = new THREE.Vector3().subVectors(p, pos[j]);
         const dist = d.length() + 1e-6;
-        const minDist = 0.28; // preferred spacing
+        const minDist = 0.35; // increased preferred spacing
         if (dist < minDist) {
           d.normalize().multiplyScalar((minDist - dist) * 0.02);
           disp.add(d);

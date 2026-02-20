@@ -1,6 +1,3 @@
-import * as THREE from 'https://unpkg.com/three@0.153.0/build/three.module.js';
-import { OrbitControls } from 'https://unpkg.com/three@0.153.0/examples/jsm/controls/OrbitControls.js';
-
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
@@ -17,7 +14,7 @@ camera.position.set(0, 5, 12);
 const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true });
 renderer.setSize(width, height);
 
-const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
 window.addEventListener('resize', () => {

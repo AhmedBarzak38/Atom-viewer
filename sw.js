@@ -1,4 +1,4 @@
-const CACHE_NAME = 'atom-viewer-v1';
+const CACHE_NAME = 'atom-viewer-v2';
 const urlsToCache = [
   '/',
   '/index.html',

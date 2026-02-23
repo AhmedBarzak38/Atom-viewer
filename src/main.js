@@ -100,7 +100,7 @@ function buildAtom(Z) {
   }
   const name = elementNames[Z] || `Element ${Z}`;
   elementLabel = makeLabelSprite(name);
-  elementLabel.scale.set(2.5, 2.5, 1); // increased scale for better visibility
+  elementLabel.scale.set(3, 3, 1); // increased scale for full visibility
   elementLabel.position.set(0, 8, 0); // Position above the atom
   atomGroup.add(elementLabel);
 

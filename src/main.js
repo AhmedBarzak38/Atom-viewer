@@ -145,7 +145,7 @@ function buildAtom(Z) {
 
     for (let e = 0; e < inShell; e++) {
       const ang = (e / inShell) * Math.PI * 2;
-      const el = makeSphere(0.25, 0x66aaff); // increased size for visibility
+      const el = makeSphere(0.25, 0xffff00); // yellow electrons
       el.userData = { radius, speed: 0.6 + Math.random() * 0.8, phase: ang + Math.random() * 0.4 };
       el.position.set(Math.cos(ang) * radius, 0, Math.sin(ang) * radius);
       ring.add(el);
@@ -174,7 +174,7 @@ function buildElectronCloud(Z) {
   }
   const positions = [];
   const colors = [];
-  const color = new THREE.Color(0x66aaff);
+  const color = new THREE.Color(0xffff00); // yellow electron cloud
   // create particles per shell with gaussian falloff
   for (let shell = 0; shell < shellRadii.length; shell++) {
     const radius = shellRadii[shell];

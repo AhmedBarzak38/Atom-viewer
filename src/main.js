@@ -17,6 +17,7 @@ const width = window.innerWidth;
 const height = window.innerHeight;
 
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x111122); // Dark blue background to make atoms more visible
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 camera.position.set(0, 5, 12);
 
@@ -85,6 +86,7 @@ function clearAtom() {
  * @param {number} Z - Atomic number (protons)
  */
 function buildAtom(Z) {
+  console.log('Building atom for Z:', Z);
   clearAtom();
 
   // Add element label above the atom
@@ -104,7 +106,7 @@ function buildAtom(Z) {
   const protons = Z;
   const neutrons = Math.round(Z * 1.25);
   const nucCount = protons + neutrons;
-  const nucRadius = 0.5; // increased for better spacing
+  const nucRadius = 1.0; // increased for visibility
   for (let i = 0; i < nucCount; i++) {
     const isProton = i < protons;
     const s = makeSphere(nucRadius * 0.8, isProton ? 0xff6666 : 0x999999);
@@ -140,7 +142,7 @@ function buildAtom(Z) {
 
     for (let e = 0; e < inShell; e++) {
       const ang = (e / inShell) * Math.PI * 2;
-      const el = makeSphere(0.12, 0x66aaff);
+      const el = makeSphere(0.25, 0x66aaff); // increased size for visibility
       el.userData = { radius, speed: 0.6 + Math.random() * 0.8, phase: ang + Math.random() * 0.4 };
       el.position.set(Math.cos(ang) * radius, 0, Math.sin(ang) * radius);
       ring.add(el);
@@ -306,7 +308,11 @@ const repackBtn = document.getElementById('repackBtn');
 // Event listeners
 atomicNumber.addEventListener('input', () => atomicVal.textContent = atomicNumber.value);
 preset.addEventListener('change', () => { atomicNumber.value = preset.value; atomicVal.textContent = preset.value; });
-buildBtn.addEventListener('click', () => buildAtom(parseInt(atomicNumber.value, 10)));
+buildBtn.addEventListener('click', () => {
+  const z = parseInt(atomicNumber.value, 10);
+  console.log('Build button clicked for Z:', z);
+  buildAtom(z);
+});
 
 cloudToggle.addEventListener('change', () => {
   const z = parseInt(atomicNumber.value, 10);

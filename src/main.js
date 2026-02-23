@@ -37,8 +37,16 @@ scene.add(dir);
 let atomGroup = new THREE.Group();
 scene.add(atomGroup);
 
-// Shell radii for electron orbits
-const shellRadii = [1.6, 2.6, 3.6, 4.6, 5.6];
+// Element names for atomic numbers 1-36
+const elementNames = [
+  '', 'Hydrogen', 'Helium', 'Lithium', 'Beryllium', 'Boron', 'Carbon', 'Nitrogen', 'Oxygen', 'Fluorine', 'Neon',
+  'Sodium', 'Magnesium', 'Aluminium', 'Silicon', 'Phosphorus', 'Sulfur', 'Chlorine', 'Argon', 'Potassium', 'Calcium',
+  'Scandium', 'Titanium', 'Vanadium', 'Chromium', 'Manganese', 'Iron', 'Cobalt', 'Nickel', 'Copper', 'Zinc',
+  'Gallium', 'Germanium', 'Arsenic', 'Selenium', 'Bromine', 'Krypton'
+];
+
+// Element label sprite
+let elementLabel = null;
 
 // Window resize handler
 window.addEventListener('resize', () => {
@@ -64,6 +72,12 @@ function makeSphere(radius, color) {
  */
 function clearAtom() {
   while (atomGroup.children.length) atomGroup.remove(atomGroup.children[0]);
+  // Reset element label
+  if (elementLabel) {
+    if (elementLabel.material.map) elementLabel.material.map.dispose();
+    elementLabel.material.dispose();
+    elementLabel = null;
+  }
 }
 
 /**
@@ -72,6 +86,18 @@ function clearAtom() {
  */
 function buildAtom(Z) {
   clearAtom();
+
+  // Add element label above the atom
+  if (elementLabel) {
+    atomGroup.remove(elementLabel);
+    if (elementLabel.material.map) elementLabel.material.map.dispose();
+    elementLabel.material.dispose();
+  }
+  const name = elementNames[Z] || `Element ${Z}`;
+  elementLabel = makeLabelSprite(name);
+  elementLabel.scale.set(2, 2, 1);
+  elementLabel.position.set(0, 8, 0); // Position above the atom
+  atomGroup.add(elementLabel);
 
   // Nucleus: protons (red) and neutrons (gray)
   const nucleus = new THREE.Group();

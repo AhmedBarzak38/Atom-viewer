@@ -100,7 +100,7 @@ function buildAtom(Z) {
   }
   const name = elementNames[Z] || `Element ${Z}`;
   elementLabel = makeLabelSprite(name);
-  elementLabel.scale.set(3, 3, 1); // increased scale for full visibility
+  elementLabel.scale.set(3.5, 3.5, 1); // increased scale for full visibility
   elementLabel.position.set(0, 8, 0); // Position above the atom
   atomGroup.add(elementLabel);
 
@@ -225,15 +225,15 @@ let orbitalLabels = [];
  * @returns {THREE.Sprite} The label sprite
  */
 function makeLabelSprite(text) {
-  const size = 256; // increased for better visibility
+  const size = 512; // large canvas for text padding
   const canvas = document.createElement('canvas');
   canvas.width = size; canvas.height = size;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = 'rgba(0,0,0,0)'; ctx.fillRect(0,0,size,size);
   ctx.fillStyle = '#ffffff'; // white text for visibility
-  ctx.font = '96px sans-serif'; // larger font
+  ctx.font = 'bold 140px sans-serif'; // larger font with bold
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(text, size/2, size/2 + 16);
+  ctx.fillText(text, size/2, size/2 + 20);
   const tex = new THREE.CanvasTexture(canvas);
   const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
   return new THREE.Sprite(mat);

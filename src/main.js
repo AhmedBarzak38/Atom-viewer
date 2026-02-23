@@ -1,3 +1,9 @@
+/**
+ * 3D Atom Viewer - Interactive Three.js Application
+ * Displays atomic structure with nucleus, electrons, and orbital shells
+ * Supports 360-degree rotation and various element configurations
+ */
+
 // Register service worker for PWA
 // if ('serviceWorker' in navigator) {
 //   navigator.serviceWorker.register('/sw.js');
@@ -5,6 +11,7 @@
 
 console.log('JS loaded - cube removed');
 
+// Canvas and scene setup
 const canvasEl = document.getElementById('canvas');
 const width = window.innerWidth;
 const height = window.innerHeight;
@@ -19,36 +26,50 @@ renderer.setSize(width, height);
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
-window.addEventListener('resize', () => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-});
-
-// Lighting
+// Lighting setup
 const hemi = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9);
 scene.add(hemi);
 const dir = new THREE.DirectionalLight(0xffffff, 0.6);
 dir.position.set(5, 10, 7);
 scene.add(dir);
 
-// Groups
+// Groups for organization
 let atomGroup = new THREE.Group();
 scene.add(atomGroup);
 
-// Simple shells (Bohr-like) radii
+// Shell radii for electron orbits
 const shellRadii = [1.6, 2.6, 3.6, 4.6, 5.6];
 
-function clearAtom() {
-  while (atomGroup.children.length) atomGroup.remove(atomGroup.children[0]);
-}
+// Window resize handler
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
 
+/**
+ * Creates a sphere mesh with specified radius and color
+ * @param {number} radius - Sphere radius
+ * @param {number} color - Hex color value
+ * @returns {THREE.Mesh} The sphere mesh
+ */
 function makeSphere(radius, color) {
   const geo = new THREE.SphereGeometry(radius, 24, 18);
   const mat = new THREE.MeshStandardMaterial({ color, metalness: 0.2, roughness: 0.6 });
   return new THREE.Mesh(geo, mat);
 }
 
+/**
+ * Clears the current atom from the scene
+ */
+function clearAtom() {
+  while (atomGroup.children.length) atomGroup.remove(atomGroup.children[0]);
+}
+
+/**
+ * Builds the 3D atom model for a given atomic number
+ * @param {number} Z - Atomic number (protons)
+ */
 function buildAtom(Z) {
   clearAtom();
 
@@ -108,6 +129,11 @@ function buildAtom(Z) {
 
 // --- Electron cloud rendering (points) ---
 let cloudPoints = null;
+
+/**
+ * Builds the electron cloud as point particles
+ * @param {number} Z - Atomic number
+ */
 function buildElectronCloud(Z) {
   if (cloudPoints) {
     atomGroup.remove(cloudPoints);
@@ -144,6 +170,11 @@ function buildElectronCloud(Z) {
   atomGroup.add(cloudPoints);
 }
 
+/**
+ * Toggles the electron cloud visibility
+ * @param {boolean} show - Whether to show the cloud
+ * @param {number} Z - Atomic number
+ */
 function toggleCloud(show, Z) {
   if (show) buildElectronCloud(Z);
   else if (cloudPoints) {
@@ -156,6 +187,12 @@ function toggleCloud(show, Z) {
 
 // --- Orbital labels (simple sprites) ---
 let orbitalLabels = [];
+
+/**
+ * Creates a sprite label for orbital shells
+ * @param {string} text - Label text
+ * @returns {THREE.Sprite} The label sprite
+ */
 function makeLabelSprite(text) {
   const size = 128;
   const canvas = document.createElement('canvas');
@@ -169,6 +206,10 @@ function makeLabelSprite(text) {
   return new THREE.Sprite(mat);
 }
 
+/**
+ * Adds orbital labels to the electron group
+ * @param {THREE.Group} electronGroup - The electron group
+ */
 function addOrbitalLabels(electronGroup) {
   orbitalLabels.forEach(l => { atomGroup.remove(l); if (l.material.map) l.material.map.dispose(); l.material.dispose(); });
   orbitalLabels = [];
@@ -182,6 +223,10 @@ function addOrbitalLabels(electronGroup) {
 }
 
 // --- Nucleus repacking (simple relaxation) ---
+/**
+ * Repacks the nucleus particles using relaxation algorithm
+ * @param {number} iter - Number of iterations
+ */
 function repackNucleus(iter = 120) {
   const nucleus = atomGroup.userData.nucleus;
   console.log('repackNucleus called, nucleus:', nucleus);
@@ -232,6 +277,7 @@ const cloudToggle = document.getElementById('cloudToggle');
 const labelToggle = document.getElementById('labelToggle');
 const repackBtn = document.getElementById('repackBtn');
 
+// Event listeners
 atomicNumber.addEventListener('input', () => atomicVal.textContent = atomicNumber.value);
 preset.addEventListener('change', () => { atomicNumber.value = preset.value; atomicVal.textContent = preset.value; });
 buildBtn.addEventListener('click', () => buildAtom(parseInt(atomicNumber.value, 10)));
@@ -259,7 +305,7 @@ repackBtn.addEventListener('click', () => {
 // Initial build
 buildAtom(parseInt(atomicNumber.value, 10));
 
-// Animation
+// Animation loop
 const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);

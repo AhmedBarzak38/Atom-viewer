@@ -49,6 +49,9 @@ const elementNames = [
 // Element label sprite
 let elementLabel = null;
 
+// Shell radii for electron orbits
+const shellRadii = [1.6, 2.6, 3.6, 4.6, 5.6];
+
 // Window resize handler
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
